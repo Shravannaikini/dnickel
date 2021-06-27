@@ -1,0 +1,185 @@
+<div class="container page">
+    <div class="row">
+        <div class="col-12 col-md-3 parameters">
+          <div style="padding:8px;">
+           <b class="regular-bold">Location</b>
+           <hr>
+           <div class="form-group" style="position:relative">
+            <div class="community-search" >
+                <i class="fa fa-search community-search-icon"></i>
+            </div>
+               <input type="text" style="border-radius: 20px; text-align: center;" class="form-control" placeholder="Select Community">
+           </div>
+           <hr>
+           <b>Distance: {{distance}} Miles</b>
+           <mat-slider (change)="updateDistance($event)" [value]="distance"
+           min="1" max="20"></mat-slider>
+           <div class="mt-2"> 
+               <div class="buttons-div">
+                <button class={{milesButton1}} type='button' value="5" (click)="updateDistanceButton(5)" (click)="milesButton(5)">5 Miles</button>
+                <button class={{milesButton2}} type='button' value="10" (click)="updateDistanceButton(10)" (click)="milesButton(10)">10 Miles</button>
+                <button class={{milesButton3}} type='button' value="15" (click)="updateDistanceButton(15)" (click)="milesButton(15)">15 Miles</button>
+                <button class={{milesButton4}} type='button' value="20" (click)="updateDistanceButton(20)" (click)="milesButton(20)">20 Miles</button>
+              </div>
+            
+           </div>
+        </div>
+        <b class="regular-bold">Skills</b>
+        <hr>
+        <div class={{expandClass1}}>
+            <div class="square-radios" style="padding:8px;"> 
+                <div class="type" *ngFor="let skill of skills">
+                    <label>
+                        <input type="checkbox" name="skill" value={{skill.value}} [(ngModel)]="skill.checked">
+                        <span>{{skill.name}}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="chev-down">
+                <i (click)="expand1()" for="expend" class={{iconClass1}} aria-hidden="true"></i>
+            <hr>
+        </div>
+       
+        <b class="regular-bold">Goods</b>
+        <hr>
+        <div class={{expandClass2}}>
+            <div class="square-radios" style="padding:8px;">
+                
+                <div class="type" *ngFor="let good of goods">
+                    <label>
+                        <input type="checkbox" name="goods" value={{good.value}} [(ngModel)]="good.checked">
+                        <span>{{good.name}}</span>
+                    </label>
+                </div>
+               
+            </div>
+        </div>
+        <div class="chev-down">
+                <i (click)="expand2()" for="expend" class={{iconClass2}} aria-hidden="true"></i>
+            <hr>
+        </div>
+       
+       
+        <div style="padding:8px;">
+          <b class="regular-bold">Price Range</b>
+          <hr>
+          <!-- <b>${{value}}-${{highValue}}</b> -->
+          <br>
+        
+          <b>{{value}}$-{{highValue}}$</b>    
+          
+      <div class="ranger">
+        <ng5-slider 
+        [(value)]=value
+        [(highValue)]=highValue
+        [options]="options"
+        step="1"
+        ></ng5-slider>
+      </div>
+    
+
+          <div class="mt-4" style="display: flex; flex-direction: column; justify-content: center;  align-items: center; flex-wrap: wrap;">
+              <p style="text-align: center;"><b>Click Apply Filter to get your desired search results</b></p>
+
+              <button style="width:100%; border-radius:20px;" type="button"
+              (click)="submitConstraints()" class="mt-3 btn btn-success">Apply Filter</button>
+               
+          </div>
+
+        </div>
+
+        </div>
+        <div class="col-12 col-md-9 results">
+          <div style="padding:8px">
+        <small>
+            {{products.length}} Results Found
+        </small>
+        <br>
+        <b>Results in "Selected Products"</b>
+        <hr>
+
+        </div>
+        
+        <div style="padding:8px">
+            <div style="float:left">
+                <small>Showing {{calLowIndex(p)}} to {{calHighIndex(p)}} of {{products.length}} results</small>
+                <pagination-controls 
+                      id="foo"
+                      (pageChange)="p = $event"
+                      maxSize="10"
+                      directionLinks="true"
+                      autoHide="true"
+                      responsive="true"
+                      previousLabel="Previous"
+                      nextLabel="Next"
+                      screenReaderPaginationLabel="Pagination"
+                      screenReaderPageLabel="page"
+                      screenReaderCurrentLabel="You're on page">
+           </pagination-controls>
+            </div>
+            <div class="float">
+                
+                <div class="dropdown" style="display: inline-block;">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Select Community
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+                  <div class="ml-2" style="display: inline-block;">
+                    <button class="btn btn-success" type="button">
+                        <i class="fas fa-map-signs"></i>
+                    </button>
+                  </div>
+                  <div class="ml-2" style="display: inline-block;">
+                      <button class="btn btn-success" (click)="listView()" type="button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                <div class="ml-2" style="display: inline-block;">
+                    <button class="btn btn-success" (click)="gridView()" type="button">
+                        <i class="fa fa-th-large"></i>
+                    </button>
+                </div>
+            </div>
+        
+        </div>
+
+        <div class="container">
+            <div class="cards-presentation">
+                <div class="row justify-content-center" *ngFor="let product of products | paginate: { id: 'foo',
+                itemsPerPage: 10,
+                currentPage: p,
+                totalItems: products.length }">
+
+                <div class={{listGrid}}>
+                    <img src="assets/lenovo.jpg">
+                    <div class="row maximum-width">
+                        <div class="product-name">
+                            <span>{{product.name}}</span>
+                        </div>
+                        <div class="product-price">
+                            <span>${{product.price}}</span>
+                        </div>
+                    </div>
+                    <div class="row maximum-width">
+                       <div class="product-location">
+                           <span>{{product.location}}</span>
+                       </div>
+                       <div class="product-time">
+                           <span>2 hrs ago</span>
+                       </div>
+                   </div>
+                   </div>
+
+            </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</div>
